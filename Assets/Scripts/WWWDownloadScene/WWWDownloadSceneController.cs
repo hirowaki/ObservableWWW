@@ -1,20 +1,17 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UniRx;
 
 public class WWWDownloadSceneController : MonoBehaviour {
-    private string _message = "READY";
-
-    // static.
-    private static GUIStyle _guiStyle = new GUIStyle();
-    private static Rect _guiRect = new Rect();
-    private static Color _colorWhite = new Color(1, 1, 1, 1);
+    [SerializeField] private WWWDownloadViewController _view;
 
     void Start () {
         // https://github.com/neuecc/UniRx#network-operations
 
-        _message = "START";
+
+        SetText("START");
         const int constantDelay = 1000;
 
         Observable.Return(0)
@@ -23,7 +20,7 @@ public class WWWDownloadSceneController : MonoBehaviour {
             })
             .SelectMany(_ => {
                 // replace IObservable => IObservable using SelectMany (map<IObservable>).
-                _message = "GOOGLE";
+                SetText("GOOGLE");
                 return ObservableWWW.Get("http://google.com/");
             })
             .SelectMany(x => {
@@ -33,7 +30,7 @@ public class WWWDownloadSceneController : MonoBehaviour {
                 return Wait(constantDelay);
             })
             .SelectMany(_ => {
-                _message = "YAHOO";
+                SetText("YAHOO");
                 return ObservableWWW.Get("http://yahoo.com/");
             })
             .SelectMany(x => {
@@ -42,7 +39,7 @@ public class WWWDownloadSceneController : MonoBehaviour {
                 return Wait(constantDelay);
             })
             .Subscribe(_ => {
-                _message = "FINISH";
+                SetText("FINISH");
             });
     }
 
@@ -55,17 +52,8 @@ public class WWWDownloadSceneController : MonoBehaviour {
         return ObservableWWW.Get("http://google.co.jp/");
     }
 
-    void OnGUI() {
-        _guiStyle.fontSize = 32;
-        _guiStyle.normal.textColor = _colorWhite;
-        _guiStyle.alignment = TextAnchor.MiddleCenter;
-
-        _guiRect.width = 128;
-        _guiRect.height = 32;
-        _guiRect.x = Screen.width / 2 - _guiRect.width / 2;;
-        _guiRect.y = Screen.height / 2 - _guiRect.height / 2;;
-
-        GUI.Label(_guiRect, _message, _guiStyle);
+    private void SetText (string text) { 
+        _view.SetText(text);
     }
 }
     
