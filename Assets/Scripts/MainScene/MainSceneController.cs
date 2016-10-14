@@ -3,15 +3,15 @@ using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
 
-public class MainSceneController : MonoBehaviour {
+public class MainSceneController : SceneBaseController {
     [SerializeField] private MainSceneViewController _view;
 
     // Use this for initialization
     void Start () {
-        _view.setObserver(onNotify);
+        startObserving(_view);
     }
 
-    void onNotify (string eventName, string from) {
+    protected override void onNotify (string eventName, string from) {
         Debug.Log(String.Format("event: {0} from: {1}", eventName, from));
 
         switch (eventName) {

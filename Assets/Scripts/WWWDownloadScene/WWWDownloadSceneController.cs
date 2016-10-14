@@ -1,24 +1,26 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using UniRx;
 
-public class WWWDownloadSceneController : MonoBehaviour {
+public class WWWDownloadSceneController : SceneBaseController {
     [SerializeField] private WWWDownloadViewController _view;
 
     void Start () {
         // https://github.com/neuecc/UniRx#network-operations
 
-
         SetText("START");
         const int constantDelay = 1000;
+        PauseSpinner();
 
         Observable.Return(0)
             .SelectMany(_ => {
                 return Wait(constantDelay);
             })
             .SelectMany(_ => {
+                StartSpinner();
+
                 // replace IObservable => IObservable using SelectMany (map<IObservable>).
                 SetText("GOOGLE");
                 return ObservableWWW.Get("http://google.com/");
@@ -34,13 +36,30 @@ public class WWWDownloadSceneController : MonoBehaviour {
                 return ObservableWWW.Get("http://yahoo.com/");
             })
             .SelectMany(x => {
+
                 Debug.Log(x.Substring(0, 100));
 
                 return Wait(constantDelay);
             })
             .Subscribe(_ => {
+                HideSpinner();
+                ShowBackButton();
                 SetText("FINISH");
             });
+
+        startObserving(_view);
+    }
+
+    protected override void onNotify (string eventName, string from) {
+        Debug.Log(String.Format("event: {0} from: {1}", eventName, from));
+
+        switch (eventName) {
+        case "MainScene":
+            SceneManager.LoadScene("MainScene");
+            return;
+        default:
+            break;
+        }
     }
 
     IObservable<int> Wait(int sec) {
@@ -54,6 +73,22 @@ public class WWWDownloadSceneController : MonoBehaviour {
 
     private void SetText (string text) { 
         _view.SetText(text);
+    }
+
+    private void StartSpinner () { 
+        _view.StartLoading();
+    }
+
+    private void PauseSpinner () { 
+        _view.PauseLoading();
+    }
+
+    private void HideSpinner () { 
+        _view.EndLoading();
+    }
+
+    private void ShowBackButton () { 
+        _view.ShowBackButton();
     }
 }
     
