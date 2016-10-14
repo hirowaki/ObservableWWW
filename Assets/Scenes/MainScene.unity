@@ -588,3 +588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _button1: {fileID: 689767479}
+  _event:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: MyIntEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

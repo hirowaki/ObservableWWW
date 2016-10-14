@@ -6,29 +6,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 
+[System.Serializable]
+public class MyIntEvent : UnityEvent<string, string>
+{
+}
+
 public class MainSceneViewController : MonoBehaviour {
     [SerializeField] private Button _button1;
-    public UnityEvent _event;
+    public MyIntEvent _event;
 
     // Use this for initialization
     void Start () {
         _button1.onClick.AsObservable().Subscribe(_ => {
             // observing.
-            this.triggerEvent("CLICKED", _button1.name);
+            this.invokeEvent("WWWDownloadScene", _button1.name);
         });
     }
 
-    // Update is called once per frame
-    void Update () {
-
-    }
-
-    public void triggerEvent(string eventName, string from) {
-        _event.Invoke();
+    // invoke.
+    public void invokeEvent(string eventName, string from) {
+        _event.Invoke(eventName, from);
     }
 
     // setObserver.
-    public void setObserver(UnityAction observer) {
+    public void setObserver(UnityAction<string, string> observer) {
         _event.AddListener(observer);
     }
 }

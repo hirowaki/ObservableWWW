@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
 
 public class MainSceneController : MonoBehaviour {
@@ -6,13 +8,18 @@ public class MainSceneController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        _view.setObserver(() => {
-            Application.LoadLevel ("WWWDownloadScene");
-        });
+        _view.setObserver(onNotify);
     }
 
-    // Update is called once per frame
-    void Update () {
+    void onNotify (string eventName, string from) {
+        Debug.Log(String.Format("event: {0} from: {1}", eventName, from));
 
+        switch (eventName) {
+        case "WWWDownloadScene":
+            SceneManager.LoadScene("WWWDownloadScene");
+            return;
+        default:
+            break;
+        }
     }
 }
