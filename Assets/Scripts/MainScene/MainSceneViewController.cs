@@ -12,7 +12,7 @@ public class MainSceneViewController : ViewBaseController {
     void Start () {
         _button1.onClick.AsObservable().Subscribe(_ => {
             // observing.
-            this.invokeEvent("WWWDownloadScene", _button1.name);
+            this.InvokeEvent("WWWDownloadScene", _button1.name);
         });
     }
 }

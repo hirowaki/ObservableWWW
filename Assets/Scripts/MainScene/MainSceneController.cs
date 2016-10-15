@@ -8,10 +8,10 @@ public class MainSceneController : SceneBaseController {
 
     // Use this for initialization
     void Start () {
-        startObserving(_view);
+        StartObserving(_view);
     }
 
-    protected override void onNotify (string eventName, string from) {
+    protected override void OnNotify (string eventName, string from) {
         Debug.Log(String.Format("event: {0} from: {1}", eventName, from));
 
         switch (eventName) {

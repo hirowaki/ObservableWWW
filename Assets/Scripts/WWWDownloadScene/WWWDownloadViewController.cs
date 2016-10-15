@@ -21,7 +21,7 @@ public class WWWDownloadViewController : ViewBaseController {
 
         _back.onClick.AsObservable().Subscribe(_ => {
             // observing.
-            this.invokeEvent("MainScene", _back.name);
+            this.InvokeEvent("MainScene", _back.name);
         });
     }
 

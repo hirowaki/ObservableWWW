@@ -5,9 +5,9 @@ using System.Collections;
 public class SceneBaseController : MonoBehaviour {
     private ViewEvent _event;
 
-    protected void startObserving(ViewBaseController viewController) {
-        viewController.setObserver(onNotify);
+    protected void StartObserving(ViewBaseController viewController) {
+        viewController.SetObserver(OnNotify);
     }
         
-    protected virtual void onNotify (string eventName, string from) {}
+    protected virtual void OnNotify (string eventName, string from) {}
 }
