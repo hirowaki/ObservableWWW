@@ -70,12 +70,12 @@ public class WWWDownloadSceneController : SceneBaseController {
             .SelectMany(_ => {
                 StartSpinner();
 
-                // replace IObservable => IObservable using SelectMany (map<IObservable>).
+                // replace IObservable<> => IObservable<> using SelectMany (map<IObservable>).
                 SetText("GOOGLE");
                 return ObservableWWW.Get("http://google.com/");
             })
             .SelectMany(x => {
-                // replace IObservable => IObservable using SelectMany.
+                // replace IObservable<> => IObservable<> using SelectMany.
                 // kinda (.map<IObservable>).
                 Debug.Log(x.Substring(0, 100));
                 return Wait(constantDelay);

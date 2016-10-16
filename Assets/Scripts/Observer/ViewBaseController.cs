@@ -1,29 +1,19 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
-public class ViewEvent : UnityEvent<string, string>
-{
-}
-
-
 public class ViewBaseController : MonoBehaviour {
-    private ViewEvent _event;
+    public event Action<string, string> _action;
 
     // invoke.
     protected void InvokeEvent(string eventName, string from) {
-        if (_event != null) {
-            _event.Invoke(eventName, from);
+        if (_action != null) {
+            _action(eventName, from);
         }
     }
 
     // SetObserver.
-    public void SetObserver(UnityAction<string, string> observer) {
-        if (_event == null) {
-            _event = new ViewEvent ();
-        }
-
-        _event.AddListener(observer);
+    public void SetObserver(Action<string, string> handler) {
+        _action += handler;
     }
 }
